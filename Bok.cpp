@@ -162,7 +162,8 @@ void MyDestroyTray(HWND wnd) {
 
 
 void OnRightClick(HWND hWnd) {
-	HMENU menu = GetSubMenu(LoadMenu(hInst, MAKEINTRESOURCE(IDC_BOK)),0);
+	HMENU menu_stub = LoadMenu(hInst, MAKEINTRESOURCE(IDC_BOK));
+	HMENU menu = GetSubMenu(menu_stub,0);
 	POINT cursor;
 	CheckMenuItem(menu, 1, MF_BYPOSITION|(lock_enter?MF_CHECKED:MF_UNCHECKED));	
 	CheckMenuItem(menu, 2, MF_BYPOSITION|(lock_neg?MF_CHECKED:MF_UNCHECKED));	
@@ -174,7 +175,7 @@ void OnRightClick(HWND hWnd) {
 	GetCursorPos(&cursor);
 	TrackPopupMenu(menu, TPM_LEFTALIGN, cursor.x, cursor.y,
 		0, hWnd, NULL);
-	DestroyMenu(menu);
+	DestroyMenu(menu_stub);
 }
 
 
