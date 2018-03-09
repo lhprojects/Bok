@@ -36,8 +36,8 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	UNREFERENCED_PARAMETER(lpCmdLine);
 	
 	iconok = LoadIcon(hInstance, MAKEINTRESOURCE(IDI_OK32));
-
 	if(iconok == NULL) return 1;
+
 	HHOOK hook = NULL;
 #if 1
 	PROC proc = (PROC)BokDllHookLL;
@@ -142,9 +142,14 @@ void MyCreateTray(HWND wnd) {
    nd.uID = 0;
    nd.uFlags = NIF_MESSAGE|NIF_ICON|NIF_TIP;
    nd.uCallbackMessage = NI_CALLBACK;
+   nd.dwInfoFlags |= NIIF_NOSOUND;
    wcscpy_s(nd.szTip,_T("Book on Keyboard"));
    nd.hIcon = iconok;
-   Shell_NotifyIcon(NIM_ADD, &nd);
+   BOOL ret = Shell_NotifyIcon(NIM_ADD, &nd);
+   if (ret) { // successful
+   } else {
+	   MessageBox(wnd, _T("create tray failed"), _T("create tray failed"), MB_OK);
+   }
 }
 
 void MyDestroyTray(HWND wnd) {
